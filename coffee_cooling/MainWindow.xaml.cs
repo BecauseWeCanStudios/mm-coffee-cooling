@@ -42,7 +42,7 @@ namespace coffee_cooling
             Series = new SeriesCollection();
             foreach (var it in result.ApproximationData)
             {
-                Series.Add(new StackedAreaSeries
+                Series.Add(new LineSeries
                 {
                     Title = it.Method.ToString(),
                     Values = new ChartValues<double>(it.Values),
@@ -63,7 +63,7 @@ namespace coffee_cooling
             var item = ItemsControl.ContainerFromElement(ListBox, (DependencyObject)e.OriginalSource) as ListBoxItem;
             if (item == null) return;
 
-            var series = (StackedAreaSeries)item.Content;
+            var series = (LineSeries)item.Content;
             series.Visibility = series.Visibility == Visibility.Visible
                 ? Visibility.Hidden
                 : Visibility.Visible;
@@ -72,12 +72,15 @@ namespace coffee_cooling
         private void DoubleTBPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             var textBox = sender as TextBox;
-            e.Handled = !Regex.IsMatch(textBox.Text + e.Text, @"^[-+]?[0-9]*\.?[0-9]*$");
+            e.Handled = !Regex.IsMatch(textBox.Text + e.Text, @"^[-+]?[0-9]*[\.,]?[0-9]*$");
         }
 
         private void TB_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            if (this.IsLoaded)
+            {
+                UpdatePlot();
+            }
         }
 
         private void UpdatePlot() => Model.BeginCalculation(new Model.Parameters()
