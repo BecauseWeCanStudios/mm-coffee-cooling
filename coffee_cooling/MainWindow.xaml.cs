@@ -29,6 +29,7 @@ namespace coffee_cooling
         public MainWindow()
         {
             InitializeComponent();
+            Labels = new List<string>();
             Series = new SeriesCollection();
             Model.CalculationCompleted += OnCalculationCompleted;
             UpdatePlot();
@@ -51,7 +52,8 @@ namespace coffee_cooling
                     Fill = new SolidColorBrush(),
                 });
             };
-            Labels = new List<double>(result.ArgumentValues);
+            Labels.Clear();
+            Labels.AddRange(result.ArgumentValues.ConvertAll(new Converter<double, string>((double x) => { return x.ToString(); })));
         }
 
         void OnCalculationCompleted(object sender, Model.Result result)
@@ -59,7 +61,7 @@ namespace coffee_cooling
             Dispatcher.Invoke(new UpdateDataDelegate(UpdateData), result);
         }
 
-        public List<double> Labels { get; set; }
+        public List<string> Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
 
         public SeriesCollection Series { get; set; }

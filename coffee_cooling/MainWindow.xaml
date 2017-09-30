@@ -39,15 +39,15 @@
                 </Grid.Resources>
 
                 <Label x:Name="AmbientTempLbl" Content="Комнатная температура" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0"/>
-                <TextBox x:Name="AmbientTempTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="1" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown" />
+                <TextBox x:Name="AmbientTempTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="1" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown" />
                 <Label x:Name="StartTempLbl" Content="Начальная температура" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0"/>
-                <TextBox x:Name="StartTempTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="2" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
+                <TextBox x:Name="StartTempTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="2" TextWrapping="Wrap" Text="80" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
                 <Label x:Name="CoolingCoefficientLbl" Content="Коэффициент остывания" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0"/>
                 <TextBox x:Name="CoolingCoefficientTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="3" TextWrapping="Wrap" Text="0,1" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
                 <Label x:Name="TimeRangeLbl" Content="Временной период" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="4" Grid.Column="0"/>
-                <TextBox x:Name="TimeRangeTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="4" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
+                <TextBox x:Name="TimeRangeTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="4" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
                 <Label x:Name="SegmentCountLbl" Content="Количество точек" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0"/>
-                <TextBox x:Name="SegmentCountTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="5" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="50" PreviewTextInput="IntTB_PreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
+                <TextBox x:Name="SegmentCountTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="5" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="50" PreviewTextInput="IntTB_PreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
 
 
                 <ListBox Name="ListBox" ItemsSource="{Binding Series}" PreviewMouseDown="ListBox_OnPreviewMouseDown" BorderThickness="0" Background="Transparent" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" VerticalContentAlignment="Center">
