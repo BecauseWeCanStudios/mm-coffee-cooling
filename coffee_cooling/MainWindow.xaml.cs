@@ -35,7 +35,9 @@ namespace coffee_cooling
             DataContext = this;
         }
 
-        void OnCalculationCompleted(object sender, Model.Result result)
+        private delegate void UpdateDataDelegate(Model.Result result);
+
+        void UpdateData(Model.Result result)
         {
             Series.Clear();
             foreach (var it in result.ApproximationData)
@@ -50,6 +52,11 @@ namespace coffee_cooling
                 });
             };
             Labels = new List<double>(result.ArgumentValues);
+        }
+
+        void OnCalculationCompleted(object sender, Model.Result result)
+        {
+            Dispatcher.Invoke(new UpdateDataDelegate(UpdateData), result);
         }
 
         public List<double> Labels { get; set; }
