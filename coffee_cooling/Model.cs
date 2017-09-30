@@ -134,9 +134,10 @@ namespace coffee_cooling
         private static void Calculate(Parameters parameters)
         {
             Calculation calculation = new Calculation(parameters);
+            double step = parameters.TimeRange / parameters.SegmentCount;
             List<double> argumentValues = 
                 new List<double> (from i in Enumerable.Range(0, parameters.SegmentCount)
-                               select parameters.TimeRange * i);
+                               select step * i);
             List<ApproximationData> approximationData = new List<ApproximationData>();
             foreach (Methods method in parameters.Methods)
                 approximationData.Add(
