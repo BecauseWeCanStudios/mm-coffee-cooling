@@ -63,8 +63,8 @@ namespace coffee_cooling
                 {
                     InitialTemperature
                 };
-                for (double t = Step; t <= Count * Step; t += Step)
-                    result.Add(TemperatureFunction(t));
+                for (int i = 1; i < Count; ++i)
+                    result.Add(TemperatureFunction(Step * i));
                 return result;
             }
 
@@ -74,7 +74,7 @@ namespace coffee_cooling
                 {
                     InitialTemperature
                 };
-                for (int i = 0; i < Count; ++i)
+                for (int i = 0; i < Count - 1; ++i)
                     result.Add(result[i] + Step * Function(result[i]));
                 return result;
             }
@@ -85,7 +85,7 @@ namespace coffee_cooling
                 {
                     InitialTemperature
                 };
-                for (int i = 0; i < Count; ++i)
+                for (int i = 0; i < Count - 1; ++i)
                 {
                     double y = result[i] + Step * Function(result[i]);
                     result.Add(result[i] + Step * (Function(result[i]) + Function(y)) / 2.0);
@@ -99,7 +99,7 @@ namespace coffee_cooling
                 {
                     InitialTemperature
                 };
-                for (int i = 0; i < Count; ++i)
+                for (int i = 0; i < Count - 1; ++i)
                 {
                     double k1 = Function(result[i]);
                     double k2 = Function(result[i] + Step * k1 / 2.0);
