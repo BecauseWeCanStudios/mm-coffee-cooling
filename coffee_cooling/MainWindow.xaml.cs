@@ -77,11 +77,6 @@ namespace coffee_cooling
 
         private void TB_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
-            {
-                ((TextBox)sender).Text = "1";
-                ((TextBox)sender).CaretIndex = 1;
-            }
             if (this.IsLoaded)
             {
                 UpdatePlot();
@@ -93,13 +88,18 @@ namespace coffee_cooling
             e.Handled = e.Key == Key.Space;
         }
 
+        private String PassDefaultIfEmpty(String s)
+        {
+            return String.IsNullOrEmpty(s) ? "1" : s;
+        }
+
         private void UpdatePlot() => Model.BeginCalculation(new Model.Parameters()
         {
-            InitialTemperature = Convert.ToDouble(StartTempTB.Text),
-            CoolingCoefficient = Convert.ToDouble(CoolingCoefficientTB.Text),
-            EnvironmentTemperature = Convert.ToDouble(AmbientTempTB.Text),
-            SegmentCount = Convert.ToInt32(SegmentCountTB.Text),
-            TimeRange = Convert.ToDouble(TimeRangeTB.Text),
+            InitialTemperature = Convert.ToDouble(PassDefaultIfEmpty(StartTempTB.Text)),
+            CoolingCoefficient = Convert.ToDouble(PassDefaultIfEmpty(CoolingCoefficientTB.Text)),
+            EnvironmentTemperature = Convert.ToDouble(PassDefaultIfEmpty(AmbientTempTB.Text)),
+            SegmentCount = Convert.ToInt32(PassDefaultIfEmpty(SegmentCountTB.Text)),
+            TimeRange = Convert.ToDouble(PassDefaultIfEmpty(TimeRangeTB.Text)),
             Methods = new List<Model.Methods>()
                 {
                     Model.Methods.Analytical, Model.Methods.Euler, Model.Methods.MEuler, Model.Methods.RK4
