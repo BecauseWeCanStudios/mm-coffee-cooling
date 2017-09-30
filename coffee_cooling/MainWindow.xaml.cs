@@ -46,6 +46,7 @@ namespace coffee_cooling
                     Values = new ChartValues<double>(it.Values),
                     LineSmoothness = 0,
                     PointGeometry = null,
+                    Fill = new SolidColorBrush(),
                 });
             };
             Labels = new List<double>(result.ArgumentValues);
