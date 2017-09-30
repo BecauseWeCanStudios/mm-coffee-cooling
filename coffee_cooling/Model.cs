@@ -63,7 +63,7 @@ namespace coffee_cooling
                 {
                     InitialTemperature
                 };
-                for (double t = Step; t < Count * Step; t += Step)
+                for (double t = Step; t <= Count * Step; t += Step)
                     result.Add(TemperatureFunction(t));
                 return result;
             }
