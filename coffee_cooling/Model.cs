@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 
 namespace coffee_cooling
 {
@@ -134,8 +135,8 @@ namespace coffee_cooling
         {
             Calculation calculation = new Calculation(parameters);
             List<double> argumentValues = 
-                (List<double>) from i in Enumerable.Range(0, parameters.SegmentCount)
-                               select parameters.TimeRange * i;
+                new List<double> (from i in Enumerable.Range(0, parameters.SegmentCount)
+                               select parameters.TimeRange * i);
             List<ApproximationData> approximationData = new List<ApproximationData>();
             foreach (Methods method in parameters.Methods)
                 approximationData.Add(
@@ -155,8 +156,11 @@ namespace coffee_cooling
 
         public static void BeginCalculation(Parameters parameters)
         {
-            Thread thread = new Thread(() => Calculate(parameters));
-            thread.Start();
+            //Thread thread = new Thread(() => Calculate(parameters));
+            //thread.Start();
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                Calculate(parameters);
+            });
         }
 
     }
