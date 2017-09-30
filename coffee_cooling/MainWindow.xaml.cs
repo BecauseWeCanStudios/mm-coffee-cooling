@@ -24,9 +24,6 @@ using System.Text.RegularExpressions;
 namespace coffee_cooling
 {
     
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : MetroWindow
     {
         public MainWindow()
@@ -48,13 +45,12 @@ namespace coffee_cooling
                     Title = it.Method.ToString(),
                     Values = new ChartValues<double>(it.Values),
                     LineSmoothness = 0,
+                    PointGeometry = null,
                 });
             };
             Labels = new List<double>(result.ArgumentValues);
-            Plot.InvalidateVisual();
         }
 
-        //public double[] Labels { get; set; }
         public List<double> Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
 
@@ -64,7 +60,6 @@ namespace coffee_cooling
         {
             var item = ItemsControl.ContainerFromElement(ListBox, (DependencyObject)e.OriginalSource) as ListBoxItem;
             if (item == null) return;
-
             var series = (LineSeries)item.Content;
             series.Visibility = series.Visibility == Visibility.Visible
                 ? Visibility.Hidden
@@ -73,8 +68,10 @@ namespace coffee_cooling
 
         private void DoubleTBPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
+            System.Globalization.CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
+            string decimalSeparator = ci.NumberFormat.CurrencyDecimalSeparator;
             var textBox = sender as TextBox;
-            e.Handled = !Regex.IsMatch(textBox.Text + e.Text, @"^[-+]?[0-9]*[\.,]?[0-9]*$");
+            e.Handled = !Regex.IsMatch(textBox.Text + e.Text, @"^[-+]?[0-9]*" + decimalSeparator + @"?[0-9]*$");
         }
 
         private void TB_TextChanged(object sender, TextChangedEventArgs e)
@@ -82,11 +79,17 @@ namespace coffee_cooling
             if (((TextBox)sender).Text == "")
             {
                 ((TextBox)sender).Text = "1";
+                ((TextBox)sender).CaretIndex = 1;
             }
             if (this.IsLoaded)
             {
                 UpdatePlot();
             }
+        }
+
+        private void TB_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
         }
 
         private void UpdatePlot() => Model.BeginCalculation(new Model.Parameters()
@@ -123,33 +126,5 @@ namespace coffee_cooling
             throw new NotImplementedException();
         }
     }
-
-    public class ReverseConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ((SeriesCollection)value).Reverse();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class StringEmptyConverter : IValueConverter
-    {
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return string.IsNullOrEmpty((string)value) ? parameter : value;
-        }
-
-        public object ConvertBack(
-              object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-
-    }
+    
 }
