@@ -99,7 +99,11 @@ namespace coffee_cooling
 
         private String PassDefaultIfEmpty(String s)
         {
-            return String.IsNullOrEmpty(s) ? "1" : s;
+            if (String.IsNullOrEmpty(s))
+                return "1";
+            if (s == "-" || s == "+")
+                return s + "1";
+            return s;
         }
 
         private void UpdatePlot() => Model.BeginCalculation(new Model.Parameters()
