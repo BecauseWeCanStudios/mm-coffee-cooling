@@ -32,6 +32,7 @@ namespace coffee_cooling
         public MainWindow()
         {
             InitializeComponent();
+            Series = new SeriesCollection();
             Model.CalculationCompleted += OnCalculationCompleted;
             UpdatePlot();
             DataContext = this;
@@ -39,7 +40,7 @@ namespace coffee_cooling
 
         void OnCalculationCompleted(object sender, Model.Result result)
         {
-            Series = new SeriesCollection();
+            Series.Clear();
             foreach (var it in result.ApproximationData)
             {
                 Series.Add(new LineSeries
@@ -49,7 +50,8 @@ namespace coffee_cooling
                     LineSmoothness = 0,
                 });
             };
-            Labels = new List<double>(result.ArgumentValues); 
+            Labels = new List<double>(result.ArgumentValues);
+            Plot.InvalidateVisual();
         }
 
         //public double[] Labels { get; set; }
@@ -77,6 +79,10 @@ namespace coffee_cooling
 
         private void TB_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (((TextBox)sender).Text == "")
+            {
+                ((TextBox)sender).Text = "1";
+            }
             if (this.IsLoaded)
             {
                 UpdatePlot();
@@ -131,4 +137,19 @@ namespace coffee_cooling
         }
     }
 
+    public class StringEmptyConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return string.IsNullOrEmpty((string)value) ? parameter : value;
+        }
+
+        public object ConvertBack(
+              object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+
+    }
 }

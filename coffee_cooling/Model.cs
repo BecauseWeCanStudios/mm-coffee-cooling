@@ -156,8 +156,6 @@ namespace coffee_cooling
 
         public static void BeginCalculation(Parameters parameters)
         {
-            //Thread thread = new Thread(() => Calculate(parameters));
-            //thread.Start();
             Application.Current.Dispatcher.Invoke((Action)delegate {
                 Calculate(parameters);
             });
