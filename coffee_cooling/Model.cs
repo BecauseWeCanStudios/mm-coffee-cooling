@@ -26,6 +26,7 @@ namespace coffee_cooling
             public Methods Method;
             public List<double> Values;
             public List<double> Error;
+            public double StandardDeviation;
         }
 
         public class Result : EventArgs
@@ -66,7 +67,8 @@ namespace coffee_cooling
                 {
                     Method = Methods.Analytical,
                     Values = AnaliticalValues,
-                    Error = null
+                    Error = null,
+                    StandardDeviation = 0
                 };
             }
 
@@ -76,7 +78,8 @@ namespace coffee_cooling
                 {
                     Method = method,
                     Values = new List<double>() { InitialTemperature },
-                    Error = new List<double>() { 0 }
+                    Error = new List<double>() { 0 },
+                    StandardDeviation = 0
                 };
             }
 
@@ -87,7 +90,9 @@ namespace coffee_cooling
                 {
                     data.Values.Add(data.Values[i] + Step * Function(data.Values[i]));
                     data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
+                    data.StandardDeviation += data.Error[i + 1] * data.Error[i + 1];
                 }
+                data.StandardDeviation /= Count;
                 return data;
             }
 
@@ -99,7 +104,9 @@ namespace coffee_cooling
                     double y = data.Values[i] + Step * Function(data.Values[i]);
                     data.Values.Add(data.Values[i] + Step * (Function(data.Values[i]) + Function(y)) / 2.0);
                     data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
+                    data.StandardDeviation += data.Error[i + 1] * data.Error[i + 1];
                 }
+                data.StandardDeviation /= Count;
                 return data;
             }
 
@@ -114,7 +121,9 @@ namespace coffee_cooling
                     double k4 = Function(data.Values[i] + Step * k3);
                     data.Values.Add(data.Values[i] + Step * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0);
                     data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
+                    data.StandardDeviation += data.Error[i + 1] * data.Error[i + 1];
                 }
+                data.StandardDeviation /= Count;
                 return data;
             }
 
