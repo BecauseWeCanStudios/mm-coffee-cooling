@@ -25,6 +25,7 @@ namespace coffee_cooling
         { 
             public Methods Method;
             public List<double> Values;
+            public List<double> Error;
         }
 
         public class Result : EventArgs
@@ -37,9 +38,10 @@ namespace coffee_cooling
         {
             private Func<double, double> Function;
             private Func<double, double> TemperatureFunction;
+            private List<double> AnaliticalValues;
             private double Step;
             private double InitialTemperature;
-            private double Count;
+            private int Count;
 
             public Calculation(Parameters parameters)
             {
@@ -55,62 +57,68 @@ namespace coffee_cooling
                 Step = parameters.TimeRange / parameters.SegmentCount;
                 InitialTemperature = parameters.InitialTemperature;
                 Count = parameters.SegmentCount;
+                AnaliticalValues = new List<double>(from i in Enumerable.Range(0, Count) select TemperatureFunction(Step * i));
             }
 
-            private List<double> Analytical()
+            private ApproximationData Analytical()
             {
-                List<double> result = new List<double>
+                return new ApproximationData()
                 {
-                    InitialTemperature
+                    Method = Methods.Analytical,
+                    Values = AnaliticalValues,
+                    Error = null
                 };
-                for (int i = 1; i < Count; ++i)
-                    result.Add(TemperatureFunction(Step * i));
-                return result;
             }
 
-            private List<double> Euler()
+            private ApproximationData GetInitialData(Methods method)
             {
-                List<double> result = new List<double>
+                return new ApproximationData()
                 {
-                    InitialTemperature
+                    Method = method,
+                    Values = new List<double>() { InitialTemperature },
+                    Error = new List<double>() { 0 }
                 };
-                for (int i = 0; i < Count - 1; ++i)
-                    result.Add(result[i] + Step * Function(result[i]));
-                return result;
             }
 
-            private List<double> MEuler()
+            private ApproximationData Euler()
             {
-                List<double> result = new List<double>()
-                {
-                    InitialTemperature
-                };
+                ApproximationData data = GetInitialData(Methods.Euler);
                 for (int i = 0; i < Count - 1; ++i)
                 {
-                    double y = result[i] + Step * Function(result[i]);
-                    result.Add(result[i] + Step * (Function(result[i]) + Function(y)) / 2.0);
+                    data.Values.Add(data.Values[i] + Step * Function(data.Values[i]));
+                    data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
                 }
-                return result;
+                return data;
             }
 
-            private List<double> RK4()
+            private ApproximationData MEuler()
             {
-                List<double> result = new List<double>()
-                {
-                    InitialTemperature
-                };
+                ApproximationData data = GetInitialData(Methods.MEuler);
                 for (int i = 0; i < Count - 1; ++i)
                 {
-                    double k1 = Function(result[i]);
-                    double k2 = Function(result[i] + Step * k1 / 2.0);
-                    double k3 = Function(result[i] + Step * k2 / 2.0);
-                    double k4 = Function(result[i] + Step * k3);
-                    result.Add(result[i] + Step * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0);
+                    double y = data.Values[i] + Step * Function(data.Values[i]);
+                    data.Values.Add(data.Values[i] + Step * (Function(data.Values[i]) + Function(y)) / 2.0);
+                    data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
                 }
-                return result;
+                return data;
             }
 
-            public List<double> Calculate(Methods method)
+            private ApproximationData RK4()
+            {
+                ApproximationData data = GetInitialData(Methods.RK4);
+                for (int i = 0; i < Count - 1; ++i)
+                {
+                    double k1 = Function(data.Values[i]);
+                    double k2 = Function(data.Values[i] + Step * k1 / 2.0);
+                    double k3 = Function(data.Values[i] + Step * k2 / 2.0);
+                    double k4 = Function(data.Values[i] + Step * k3);
+                    data.Values.Add(data.Values[i] + Step * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0);
+                    data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
+                }
+                return data;
+            }
+
+            public ApproximationData Calculate(Methods method)
             {
                 switch (method)
                 {
@@ -123,7 +131,7 @@ namespace coffee_cooling
                     case Methods.RK4:
                         return RK4();
                     default:
-                        return null;
+                        return new ApproximationData();
                 }
             }
 
@@ -140,13 +148,7 @@ namespace coffee_cooling
                                select step * i);
             List<ApproximationData> approximationData = new List<ApproximationData>();
             foreach (Methods method in parameters.Methods)
-                approximationData.Add(
-                    new ApproximationData()
-                    {
-                        Method = method,
-                        Values = calculation.Calculate(method)
-                    }
-                );
+                approximationData.Add(calculation.Calculate(method));
             CalculationCompleted(null,
                 new Result()
                 {
