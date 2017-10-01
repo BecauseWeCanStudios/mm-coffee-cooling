@@ -79,7 +79,7 @@ namespace coffee_cooling
                     });
                 }
             }
-            EulerDeviation = result.ApproximationData[Model.Methods.Euler].StandardDeviation.ToString();
+            EulerDeviation = result.ApproximationData[Model.Methods.Euler].StandardDeviation;
         }
 
         void OnCalculationCompleted(object sender, Model.Result result)
@@ -87,13 +87,57 @@ namespace coffee_cooling
             Dispatcher.Invoke(new UpdateDataDelegate(UpdateData), result);
         }
 
-        private string _eulerDeviation;
-
-        public string EulerDeviation {
+        private double _eulerDeviation;
+        public double EulerDeviation {
             get { return _eulerDeviation; }
             set {
                 _eulerDeviation = value;
                 OnPropertyChanged("EulerDeviation");
+            }
+        }
+
+        private double _eulerError;
+        public double EulerError {
+            get { return _eulerError; }
+            set {
+                _eulerError = value;
+                OnPropertyChanged("EulerError");
+            }
+        }
+
+        private double _meulerDeviation;
+        public double MEulerDeviation {
+            get { return _meulerDeviation; }
+            set {
+                _meulerDeviation = value;
+                OnPropertyChanged("MEulerDeviation");
+            }
+        }
+
+        private double _meulerError;
+        public double MEulerError {
+            get { return _meulerError; }
+            set {
+                _meulerError = value;
+                OnPropertyChanged("MEulerError");
+            }
+        }
+
+        private double _rK4Deviation;
+        public double RK4Deviation {
+            get { return _rK4Deviation; }
+            set {
+                _rK4Deviation = value;
+                OnPropertyChanged("RK4Deviation");
+            }
+        }
+
+        private double _rK4Error;
+        public double RK4Error {
+            get { return _rK4Error; }
+            set {
+                _rK4Error = value;
+                OnPropertyChanged("RK4Error");
             }
         }
 
@@ -202,5 +246,49 @@ namespace coffee_cooling
         public double RK4SolutionVal { get; set; }
         public double RK4ErrorVal { get; set; }
     }
-    
+
+    [ValueConversion(typeof(object), typeof(string))]
+    public class StringFormatConverter : IValueConverter, IMultiValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Convert(new object[] { value }, targetType, parameter, culture);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            System.Diagnostics.Trace.TraceError("StringFormatConverter: does not support TwoWay or OneWayToSource bindings.");
+            return DependencyProperty.UnsetValue;
+        }
+
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            try
+            {
+                string format = parameter?.ToString();
+                if (String.IsNullOrEmpty(format))
+                {
+                    System.Text.StringBuilder builder = new System.Text.StringBuilder();
+                    for (int index = 0; index < values.Length; ++index)
+                    {
+                        builder.Append("{" + index + "}");
+                    }
+                    format = builder.ToString();
+                }
+                return String.Format(/*culture,*/ format, values);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("StringFormatConverter({0}): {1}", parameter, ex.Message);
+                return DependencyProperty.UnsetValue;
+            }
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            System.Diagnostics.Trace.TraceError("StringFormatConverter: does not support TwoWay or OneWayToSource bindings.");
+            return null;
+        }
+    }
+
 }
