@@ -24,7 +24,7 @@ using System.Text.RegularExpressions;
 namespace coffee_cooling
 {
     
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         public MainWindow()
         {
@@ -63,7 +63,7 @@ namespace coffee_cooling
             using (var rk4e = result.ApproximationData[Model.Methods.RK4].Error.GetEnumerator())
             using (var time = result.ArgumentValues.GetEnumerator())
             {
-                while (n.MoveNext() && anlv.MoveNext() && eulv.MoveNext() && eule.MoveNext() && meulv.MoveNext() && meule.MoveNext() && rk4v.MoveNext() && rk4e.MoveNext())
+                while (n.MoveNext() && anlv.MoveNext() && eulv.MoveNext() && eule.MoveNext() && meulv.MoveNext() && meule.MoveNext() && rk4v.MoveNext() && rk4e.MoveNext() && time.MoveNext())
                 {
                     Data.Add(new DataPoint
                     {
@@ -79,7 +79,7 @@ namespace coffee_cooling
                     });
                 }
             }
-            EulerDeviation = result.ApproximationData[Model.Methods.Euler].StandardDeviation;
+            EulerDeviation = result.ApproximationData[Model.Methods.Euler].StandardDeviation.ToString();
         }
 
         void OnCalculationCompleted(object sender, Model.Result result)
@@ -87,7 +87,15 @@ namespace coffee_cooling
             Dispatcher.Invoke(new UpdateDataDelegate(UpdateData), result);
         }
 
-        public Double EulerDeviation { get; set; }
+        private string _eulerDeviation;
+
+        public string EulerDeviation {
+            get { return _eulerDeviation; }
+            set {
+                _eulerDeviation = value;
+                OnPropertyChanged("EulerDeviation");
+            }
+        }
 
         public List<string> Labels { get; set; } = new List<string>();
 
@@ -99,6 +107,13 @@ namespace coffee_cooling
         {
             {Model.Methods.Analytical, "Аналитический" }, {Model.Methods.Euler, "Эйлера" }, {Model.Methods.MEuler, "Мод. Эйлера" }, {Model.Methods.RK4, "Рунге-Кутты" }
         };
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
         private void ListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {

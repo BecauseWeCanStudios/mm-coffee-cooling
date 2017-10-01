@@ -355,7 +355,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <Label Name="EuDeLbl" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="{Binding EulerDeviation }"></Label>
+                <Label Name="EuDeLbl" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="{Binding EulerDeviation, StringFormat=test {0} test }"></Label>
             </Grid>
         </TabItem>
     </dragablz:TabablzControl>
