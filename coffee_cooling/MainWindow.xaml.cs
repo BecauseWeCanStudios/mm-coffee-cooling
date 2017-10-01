@@ -80,6 +80,11 @@ namespace coffee_cooling
                 }
             }
             EulerDeviation = result.ApproximationData[Model.Methods.Euler].StandardDeviation;
+            EulerError = result.ApproximationData[Model.Methods.Euler].Error.Last();
+            MEulerDeviation = result.ApproximationData[Model.Methods.MEuler].StandardDeviation;
+            MEulerError = result.ApproximationData[Model.Methods.MEuler].Error.Last();
+            RK4Deviation = result.ApproximationData[Model.Methods.RK4].StandardDeviation;
+            RK4Error = result.ApproximationData[Model.Methods.RK4].Error.Last();
         }
 
         void OnCalculationCompleted(object sender, Model.Result result)

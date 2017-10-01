@@ -9,13 +9,18 @@
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
         xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Модель остывания кофе" Height="900" Width="1400"
         GlowBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1">
+    <metro:MetroWindow.Resources>
+        <system:String x:Key="Partition">QuickStart</system:String>
+    </metro:MetroWindow.Resources>
+    <dockablz:Layout Partition="{StaticResource Partition}">
     <dragablz:TabablzControl ConsolidateOrphanedItems="True">
         <dragablz:TabablzControl.InterTabController>
-            <dragablz:InterTabController />
+            <dragablz:InterTabController Partition="{StaticResource Partition}" />
         </dragablz:TabablzControl.InterTabController>
         <TabItem Header="ГРАФИК">
             <Grid ShowGridLines="False">
@@ -367,4 +372,5 @@
             </Grid>
         </TabItem>
     </dragablz:TabablzControl>
+    </dockablz:Layout>
 </metro:MetroWindow>
