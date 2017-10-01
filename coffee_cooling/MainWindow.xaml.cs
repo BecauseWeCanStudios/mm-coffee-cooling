@@ -26,12 +26,27 @@ namespace coffee_cooling
     
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
+
+        static bool IsFirst = true;
+
         public MainWindow()
         {
             InitializeComponent();
-            Model.CalculationCompleted += OnCalculationCompleted;
-            UpdatePlot();
+            if (IsFirst)
+            {
+                UpdatePlot();
+                IsFirst = false;
+                Model.CalculationCompleted += OnCalculationCompleted;
+                this.Closed += OnMainWindowClosed;
+            }
+            else
+                this.IsCloseButtonEnabled = false;
             DataContext = this;
+        }
+
+        private void OnMainWindowClosed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private delegate void UpdateDataDelegate(Model.Result result);
@@ -39,12 +54,23 @@ namespace coffee_cooling
         void UpdateData(Model.Result result)
         {
             Series.Clear();
+            ErrorSeries.Clear();
             foreach (var it in result.ApproximationData)
             {
                 Series.Add(new LineSeries
                 {
                     Title = MethodNames[it.Key],
                     Values = new ChartValues<double>(it.Value.Values),
+                    LineSmoothness = 0,
+                    PointGeometry = null,
+                    Fill = new SolidColorBrush(),
+                });
+                if (it.Value.Error == null)
+                    continue;
+                ErrorSeries.Add(new LineSeries()
+                {
+                    Title = MethodNames[it.Key],
+                    Values = new ChartValues<double>(it.Value.Error),
                     LineSmoothness = 0,
                     PointGeometry = null,
                     Fill = new SolidColorBrush(),
@@ -150,6 +176,8 @@ namespace coffee_cooling
 
         public SeriesCollection Series { get; set; } = new SeriesCollection();
 
+        public SeriesCollection ErrorSeries { get; set; } = new SeriesCollection();
+
         public ObservableCollection<DataPoint> Data { get; set; } = new ObservableCollection<DataPoint>();
 
         public static readonly Dictionary<Model.Methods, string> MethodNames = new Dictionary<Model.Methods, string>()
@@ -167,6 +195,16 @@ namespace coffee_cooling
         private void ListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = ItemsControl.ContainerFromElement(ListBox, (DependencyObject)e.OriginalSource) as ListBoxItem;
+            if (item == null) return;
+            var series = (LineSeries)item.Content;
+            series.Visibility = series.Visibility == Visibility.Visible
+                ? Visibility.Hidden
+                : Visibility.Visible;
+        }
+
+        private void ErrorListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement(ErrorListBox, (DependencyObject)e.OriginalSource) as ListBoxItem;
             if (item == null) return;
             var series = (LineSeries)item.Content;
             series.Visibility = series.Visibility == Visibility.Visible
@@ -238,6 +276,7 @@ namespace coffee_cooling
             throw new NotImplementedException();
         }
     }
+
 
     public class DataPoint
     {

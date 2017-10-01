@@ -308,14 +308,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="400"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 
                 <Grid.Resources>
                     <local:StringFormatConverter x:Key="StringFormatConverter"></local:StringFormatConverter>
                 </Grid.Resources>
 
-                    <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="7" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+                <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="7" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
                 
                 <ListView Name="DataLV" ItemsSource="{Binding Data}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="7">
                     <ListView.View>
@@ -390,6 +390,56 @@
                 <Label Name="RK4ErLbl" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Content="{Binding RK4Error, Converter={StaticResource StringFormatConverter}, ConverterParameter=Ошибка на последнем шаге метода Рунге-Кутты: {0:e3} }" FontSize="14"></Label>
             </Grid>
         </TabItem>
+            <TabItem Header="ГРАФИК ОШИБКИ">
+                <Grid ShowGridLines="False">
+
+                    <Grid.Resources>
+                        <local:OpacityConverter x:Key="OpacityConverter"></local:OpacityConverter>
+                    </Grid.Resources>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="200"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <lvc:CartesianChart Name="ErrorPlot" Series="{Binding ErrorSeries}" Hoverable="False" DataTooltip="{x:Null}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" DisableAnimations="True">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis IsEnabled="True" Labels="{Binding Labels}" ShowLabels="True" FontSize="14"></lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis IsMerged="False" FontSize="14"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+
+                    <ListBox Name="ErrorListBox" ItemsSource="{Binding ErrorSeries}" PreviewMouseDown="ErrorListBox_OnPreviewMouseDown" BorderThickness="0" Background="Transparent" Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" VerticalContentAlignment="Center">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding (lvc:LineSeries.Title)}" 
+                                           Foreground="{Binding (lvc:LineSeries.Stroke)}"
+                                           Opacity="{Binding (lvc:LineSeries.Visibility), Converter={StaticResource OpacityConverter}}"
+                                           FontSize="22"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Grid>
+            </TabItem>
     </dragablz:TabablzControl>
     </dockablz:Layout>
 </metro:MetroWindow>
