@@ -79,12 +79,15 @@ namespace coffee_cooling
                     });
                 }
             }
+            EulerDeviation = result.ApproximationData[Model.Methods.Euler].StandardDeviation;
         }
 
         void OnCalculationCompleted(object sender, Model.Result result)
         {
             Dispatcher.Invoke(new UpdateDataDelegate(UpdateData), result);
         }
+
+        public Double EulerDeviation { get; set; }
 
         public List<string> Labels { get; set; } = new List<string>();
 
