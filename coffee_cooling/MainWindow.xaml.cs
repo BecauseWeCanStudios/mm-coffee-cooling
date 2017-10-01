@@ -34,14 +34,14 @@ namespace coffee_cooling
             InitializeComponent();
             if (IsFirst)
             {
-                UpdatePlot();
                 IsFirst = false;
-                Model.CalculationCompleted += OnCalculationCompleted;
                 this.Closed += OnMainWindowClosed;
             }
             else
                 this.IsCloseButtonEnabled = false;
             DataContext = this;
+            Model.CalculationCompleted += OnCalculationCompleted;
+            UpdatePlot();
         }
 
         private void OnMainWindowClosed(object sender, EventArgs e)
@@ -172,13 +172,13 @@ namespace coffee_cooling
             }
         }
 
-        public static List<string> Labels { get; set; } = new List<string>();
+        public List<string> Labels { get; set; } = new List<string>();
 
-        public static SeriesCollection Series { get; set; } = new SeriesCollection();
+        public SeriesCollection Series { get; set; } = new SeriesCollection();
 
-        public static SeriesCollection ErrorSeries { get; set; } = new SeriesCollection();
+        public SeriesCollection ErrorSeries { get; set; } = new SeriesCollection();
 
-        public static ObservableCollection<DataPoint> Data { get; set; } = new ObservableCollection<DataPoint>();
+        public ObservableCollection<DataPoint> Data { get; set; } = new ObservableCollection<DataPoint>();
 
         public static readonly Dictionary<Model.Methods, string> MethodNames = new Dictionary<Model.Methods, string>()
         {
