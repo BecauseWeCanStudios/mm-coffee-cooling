@@ -72,76 +72,59 @@ namespace coffee_cooling
                 };
             }
 
-            private ApproximationData GetInitialData(Methods method)
+            private double Euler(double y)
             {
-                return new ApproximationData()
+                return y + Step * Function(y);
+            }
+
+            private double MEuler(double y)
+            {
+                return y + Step * (Function(y) + Function(y + Step * Function(y))) / 2.0;
+            }
+
+            private double RK4(double y)
+            {
+                double k1 = Function(y);
+                double k2 = Function(y + Step * k1 / 2.0);
+                double k3 = Function(y + Step * k2 / 2.0);
+                double k4 = Function(y + Step * k3);
+                return y + Step * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0;
+            }
+
+            public ApproximationData Calculate(Methods method)
+            {
+                Func<double, double> methodFunction = null;
+                switch (method)
+                {
+                    case Methods.Analytical:
+                        return Analytical();
+                    case Methods.Euler:
+                        methodFunction = Euler;
+                        break;
+                    case Methods.MEuler:
+                        methodFunction = MEuler;
+                        break;
+                    case Methods.RK4:
+                        methodFunction = RK4;
+                        break;
+                    default:
+                        return new ApproximationData();
+                }
+                ApproximationData data = new ApproximationData()
                 {
                     Method = method,
                     Values = new List<double>() { InitialTemperature },
                     Error = new List<double>() { 0 },
                     StandardDeviation = 0
                 };
-            }
-
-            private ApproximationData Euler()
-            {
-                ApproximationData data = GetInitialData(Methods.Euler);
                 for (int i = 0; i < Count - 1; ++i)
                 {
-                    data.Values.Add(data.Values[i] + Step * Function(data.Values[i]));
+                    data.Values.Add(methodFunction(data.Values[i]));
                     data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
                     data.StandardDeviation += data.Error[i + 1] * data.Error[i + 1];
                 }
                 data.StandardDeviation /= Count;
                 return data;
-            }
-
-            private ApproximationData MEuler()
-            {
-                ApproximationData data = GetInitialData(Methods.MEuler);
-                for (int i = 0; i < Count - 1; ++i)
-                {
-                    double y = data.Values[i] + Step * Function(data.Values[i]);
-                    data.Values.Add(data.Values[i] + Step * (Function(data.Values[i]) + Function(y)) / 2.0);
-                    data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
-                    data.StandardDeviation += data.Error[i + 1] * data.Error[i + 1];
-                }
-                data.StandardDeviation /= Count;
-                return data;
-            }
-
-            private ApproximationData RK4()
-            {
-                ApproximationData data = GetInitialData(Methods.RK4);
-                for (int i = 0; i < Count - 1; ++i)
-                {
-                    double k1 = Function(data.Values[i]);
-                    double k2 = Function(data.Values[i] + Step * k1 / 2.0);
-                    double k3 = Function(data.Values[i] + Step * k2 / 2.0);
-                    double k4 = Function(data.Values[i] + Step * k3);
-                    data.Values.Add(data.Values[i] + Step * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0);
-                    data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
-                    data.StandardDeviation += data.Error[i + 1] * data.Error[i + 1];
-                }
-                data.StandardDeviation /= Count;
-                return data;
-            }
-
-            public ApproximationData Calculate(Methods method)
-            {
-                switch (method)
-                {
-                    case Methods.Analytical:
-                        return Analytical();
-                    case Methods.Euler:
-                        return Euler();
-                    case Methods.MEuler:
-                        return MEuler();
-                    case Methods.RK4:
-                        return RK4();
-                    default:
-                        return new ApproximationData();
-                }
             }
 
         }
@@ -163,7 +146,8 @@ namespace coffee_cooling
                 {
                     ArgumentValues = argumentValues,
                     ApproximationData = approximationData
-                });
+                }
+            );
         }
 
         public static void BeginCalculation(Parameters parameters)
