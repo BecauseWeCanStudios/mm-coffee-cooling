@@ -57,7 +57,7 @@ namespace coffee_cooling
                 Step = parameters.TimeRange / parameters.SegmentCount;
                 InitialTemperature = parameters.InitialTemperature;
                 Count = parameters.SegmentCount;
-                AnaliticalValues = new List<double>(from i in Enumerable.Range(0, Count) select TemperatureFunction(Step * i));
+                AnaliticalValues = new List<double>(from i in Enumerable.Range(0, Count + 1) select TemperatureFunction(Step * i));
             }
 
             private ApproximationData Analytical()
@@ -114,7 +114,7 @@ namespace coffee_cooling
                     Error = new List<double>() { 0 },
                     StandardDeviation = 0
                 };
-                for (int i = 0; i < Count - 1; ++i)
+                for (int i = 0; i < Count; ++i)
                 {
                     data.Values.Add(methodFunction(data.Values[i]));
                     data.Error.Add(Math.Abs(data.Values[i + 1] - AnaliticalValues[i + 1]));
@@ -133,7 +133,7 @@ namespace coffee_cooling
             Calculation calculation = new Calculation(parameters);
             double step = parameters.TimeRange / parameters.SegmentCount;
             List<double> argumentValues = 
-                new List<double> (from i in Enumerable.Range(0, parameters.SegmentCount)
+                new List<double> (from i in Enumerable.Range(0, parameters.SegmentCount + 1)
                                select step * i);
             Dictionary<Methods, ApproximationData> approximationData = new Dictionary<Methods, ApproximationData>();
             foreach (Methods method in parameters.Methods)
