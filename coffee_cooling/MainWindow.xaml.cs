@@ -45,8 +45,8 @@ namespace coffee_cooling
             {
                 Series.Add(new LineSeries
                 {
-                    Title = it.Method.ToString(),
-                    Values = new ChartValues<double>(it.Values),
+                    Title = it.Key.ToString(),
+                    Values = new ChartValues<double>(it.Value.Values),
                     LineSmoothness = 0,
                     PointGeometry = null,
                     Fill = new SolidColorBrush(),

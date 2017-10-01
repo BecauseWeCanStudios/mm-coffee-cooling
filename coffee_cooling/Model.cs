@@ -22,8 +22,7 @@ namespace coffee_cooling
         }
 
         public struct ApproximationData
-        { 
-            public Methods Method;
+        {
             public List<double> Values;
             public List<double> Error;
             public double StandardDeviation;
@@ -32,7 +31,7 @@ namespace coffee_cooling
         public class Result : EventArgs
         {
             public List<double> ArgumentValues;
-            public List<ApproximationData> ApproximationData;
+            public Dictionary<Methods, ApproximationData> ApproximationData;
         }
 
         private class Calculation
@@ -65,7 +64,6 @@ namespace coffee_cooling
             {
                 return new ApproximationData()
                 {
-                    Method = Methods.Analytical,
                     Values = AnaliticalValues,
                     Error = null,
                     StandardDeviation = 0
@@ -112,7 +110,6 @@ namespace coffee_cooling
                 }
                 ApproximationData data = new ApproximationData()
                 {
-                    Method = method,
                     Values = new List<double>() { InitialTemperature },
                     Error = new List<double>() { 0 },
                     StandardDeviation = 0
@@ -138,9 +135,9 @@ namespace coffee_cooling
             List<double> argumentValues = 
                 new List<double> (from i in Enumerable.Range(0, parameters.SegmentCount)
                                select step * i);
-            List<ApproximationData> approximationData = new List<ApproximationData>();
+            Dictionary<Methods, ApproximationData> approximationData = new Dictionary<Methods, ApproximationData>();
             foreach (Methods method in parameters.Methods)
-                approximationData.Add(calculation.Calculate(method));
+                approximationData[method] = calculation.Calculate(method);
             CalculationCompleted(null,
                 new Result()
                 {
