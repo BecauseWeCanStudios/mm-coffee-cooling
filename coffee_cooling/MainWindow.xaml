@@ -13,7 +13,13 @@
         mc:Ignorable="d"
         Title="Модель остывания кофе" Height="900" Width="1400"
         GlowBrush="{DynamicResource AccentColorBrush}"
-        BorderThickness="1">
+        BorderThickness="1"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+                   >
     <metro:MetroWindow.Resources>
         <system:String x:Key="Partition">QuickStart</system:String>
     </metro:MetroWindow.Resources>
@@ -34,7 +40,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"></ColumnDefinition>
+                        <ColumnDefinition Width="200"></ColumnDefinition>
                         <ColumnDefinition Width="60"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
@@ -308,7 +314,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="400"></ColumnDefinition>
+                    <ColumnDefinition Width="450"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 
                 <Grid.Resources>
