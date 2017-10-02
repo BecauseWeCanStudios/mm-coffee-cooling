@@ -121,6 +121,7 @@ namespace coffee_cooling
                     data.StandardDeviation += data.Error[i + 1] * data.Error[i + 1];
                 }
                 data.StandardDeviation /= Count;
+                data.StandardDeviation = Math.Sqrt(data.StandardDeviation);
                 return data;
             }
 
