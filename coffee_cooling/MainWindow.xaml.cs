@@ -32,6 +32,9 @@ namespace coffee_cooling
         public MainWindow()
         {
             InitializeComponent();
+            System.Globalization.CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
+            string decimalSeparator = ci.NumberFormat.CurrencyDecimalSeparator;
+            CoolingCoefficientTB.Text = CoolingCoefficientTB.Text.Replace(',', decimalSeparator.ToCharArray()[0]);
             if (IsFirst)
             {
                 IsFirst = false;
@@ -216,8 +219,13 @@ namespace coffee_cooling
         {
             System.Globalization.CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
             string decimalSeparator = ci.NumberFormat.CurrencyDecimalSeparator;
+            if (decimalSeparator == ".")
+            {
+                decimalSeparator = "\\" + decimalSeparator;
+            }
             var textBox = sender as TextBox;
-            e.Handled = !Regex.IsMatch(textBox.Text + e.Text, @"^[-+]?[0-9]*" + decimalSeparator + @"?[0-9]*$");
+            var pos = textBox.CaretIndex;
+            e.Handled = !Regex.IsMatch(textBox.Text.Substring(0, pos) + e.Text + textBox.Text.Substring(pos), @"^[-+]?[0-9]*" + decimalSeparator + @"?[0-9]*$");
         }
 
         private void TB_TextChanged(object sender, TextChangedEventArgs e)
