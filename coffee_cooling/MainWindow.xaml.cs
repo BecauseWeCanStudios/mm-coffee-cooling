@@ -34,7 +34,7 @@ namespace coffee_cooling
             InitializeComponent();
             System.Globalization.CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
             string decimalSeparator = ci.NumberFormat.CurrencyDecimalSeparator;
-            CoolingCoefficientTB.Text = CoolingCoefficientTB.Text.Replace(',', decimalSeparator.ToCharArray()[0]);
+            CoolingCoefficientTB.Text = CoolingCoefficientTB.Text.Replace(',', decimalSeparator[0]);
             if (IsFirst)
             {
                 IsFirst = false;
