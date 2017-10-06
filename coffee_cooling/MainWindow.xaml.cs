@@ -266,7 +266,8 @@ namespace coffee_cooling
         private void IntTB_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             var textBox = sender as TextBox;
-            e.Handled = !Regex.IsMatch(textBox.Text + e.Text, @"^[-+]?[0-9]*$");
+            var pos = textBox.CaretIndex;
+            e.Handled = !Regex.IsMatch(textBox.Text.Substring(0, pos) + e.Text + textBox.Text.Substring(pos), @"^[-+]?[0-9]*$");
         }
     }
 
