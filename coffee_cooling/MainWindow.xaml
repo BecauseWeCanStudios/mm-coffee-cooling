@@ -31,14 +31,13 @@
             <TabItem Header="ПАРАМЕТРЫ МОДЕЛИ">
                 <Grid ShowGridLines="False">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
@@ -46,10 +45,11 @@
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"></ColumnDefinition>
+                        <ColumnDefinition Width="30"></ColumnDefinition>
                         <ColumnDefinition Width="80"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-
-                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="5">
+                    <Label Content="Уравнение модели:" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center"/>
+                    <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="5">
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
@@ -242,8 +242,8 @@
                             </DrawingImage>
                         </Image.Source>
                     </Image>
-                    <Label Content="Аналитическое решение:" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
-                    <Image Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Top">
+                    <Label Content="Аналитическое решение:" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center"/>
+                    <Image Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Margin="5" VerticalAlignment="Top">
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
@@ -431,8 +431,7 @@
                             </DrawingImage>
                         </Image.Source>
                     </Image>
-                    <Label Content="Комнатная температура:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="8" Grid.Column="0"/>
-                    <Image Grid.Column="1" Grid.Row="8" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Image Grid.Column="1" Grid.Row="5" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
@@ -467,8 +466,7 @@
                             </DrawingImage>
                         </Image.Source>
                     </Image>
-                    <Label Content="Коэффициент остывания:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="9" Grid.Column="0"/>
-                    <Image Grid.Column="1" Grid.Row="9" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="None">
+                    <Image Grid.Column="1" Grid.Row="6" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="None">
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
@@ -494,8 +492,7 @@
                             </DrawingImage>
                         </Image.Source>
                     </Image>
-                    <Label Content="Начальная температура:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="10" Grid.Column="0"/>
-                    <Image Grid.Column="1" Grid.Row="10" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Image Grid.Column="1" Grid.Row="7" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
@@ -531,16 +528,16 @@
                         </Image.Source>
                     </Image>
 
-                    <Label x:Name="AmbientTempLbl" Content="Комнатная температура" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox x:Name="AmbientTempTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="1" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown" />
-                    <Label x:Name="StartTempLbl" Content="Начальная температура" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox x:Name="StartTempTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="2" TextWrapping="Wrap" Text="80" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
-                    <Label x:Name="CoolingCoefficientLbl" Content="Коэффициент остывания" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0"/>
-                    <TextBox x:Name="CoolingCoefficientTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="3" TextWrapping="Wrap" Text="0,1" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
-                    <Label x:Name="TimeRangeLbl" Content="Временной период" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="4" Grid.Column="0"/>
-                    <TextBox x:Name="TimeRangeTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="4" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
-                    <Label x:Name="SegmentCountLbl" Content="Количество точек" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0"/>
-                    <TextBox x:Name="SegmentCountTB" Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="5" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="50" PreviewTextInput="IntTB_PreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
+                    <Label x:Name="AmbientTempLbl" Content="Комнатная температура" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0"/>
+                    <TextBox x:Name="AmbientTempTB" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="5" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown" />
+                    <Label x:Name="StartTempLbl" Content="Начальная температура" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="7" Grid.Column="0"/>
+                    <TextBox x:Name="StartTempTB" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="7" TextWrapping="Wrap" Text="80" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
+                    <Label x:Name="CoolingCoefficientLbl" Content="Коэффициент остывания" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0"/>
+                    <TextBox x:Name="CoolingCoefficientTB" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="6" TextWrapping="Wrap" Text="0,1" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
+                    <Label x:Name="TimeRangeLbl" Content="Временной период" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="8" Grid.Column="0"/>
+                    <TextBox x:Name="TimeRangeTB" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="8" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="50" PreviewTextInput="DoubleTBPreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
+                    <Label x:Name="SegmentCountLbl" Content="Количество точек" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="9" Grid.Column="0"/>
+                    <TextBox x:Name="SegmentCountTB" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="9" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="50" PreviewTextInput="IntTB_PreviewTextInput" TextChanged="TB_TextChanged" PreviewKeyDown="TB_PreviewKeyDown"/>
 
                 </Grid>
             </TabItem>
