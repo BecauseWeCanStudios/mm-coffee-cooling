@@ -20,6 +20,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Microsoft.Win32;
+using System.IO;
+using CsvHelper;
 
 namespace coffee_cooling
 {
@@ -268,6 +271,33 @@ namespace coffee_cooling
             var textBox = sender as TextBox;
             var pos = textBox.CaretIndex;
             e.Handled = !Regex.IsMatch(textBox.Text.Substring(0, pos) + e.Text + textBox.Text.Substring(pos), @"^[-+]?[0-9]*$");
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV (*.csv)|*.csv";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                StreamWriter file = new StreamWriter(saveFileDialog.FileName);
+                var csv = new CsvWriter(file);
+                foreach(var item in Data)
+                {
+                    csv.WriteField(item.PointNumber);
+                    csv.WriteField(item.TimePoint);
+                    csv.WriteField(item.AnalyticalSolutionVal);
+                    csv.WriteField(item.EulerSolutionVal);
+                    csv.WriteField(item.EulerErrorVal);
+                    csv.WriteField(item.MEulerSolutionVal);
+                    csv.WriteField(item.MEulerErrorVal);
+                    csv.WriteField(item.RK4SolutionVal);
+                    csv.WriteField(item.RK4ErrorVal);
+                    csv.NextRecord();
+                }
+                file.Close();
+                file.Dispose();
+            }
+                //File.WriteAllText(saveFileDialog.FileName, txtEditor.Text);
         }
     }
 

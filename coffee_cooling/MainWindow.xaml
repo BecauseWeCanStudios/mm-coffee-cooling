@@ -599,7 +599,8 @@
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    </Grid.RowDefinitions>
                 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -684,6 +685,7 @@
                 <Label Name="MEuErLbl" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Content="{Binding MEulerError, Converter={StaticResource StringFormatConverter}, ConverterParameter=Ошибка на последнем шаге улучш. метода Эйлера: {0:e3} }" FontSize="14"></Label>
                 <Label Name="RK4DeLbl" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Content="{Binding RK4Deviation, Converter={StaticResource StringFormatConverter}, ConverterParameter=Средняя ошибка метода Рунге-Кутты: {0:e3} }" FontSize="14"></Label>
                 <Label Name="RK4ErLbl" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Content="{Binding RK4Error, Converter={StaticResource StringFormatConverter}, ConverterParameter=Ошибка на последнем шаге метода Рунге-Кутты: {0:e3} }" FontSize="14"></Label>
+                <Button Name="SaveButton" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" Click="SaveButton_Click">Сохранить</Button>
             </Grid>
         </TabItem>
             <TabItem Header="ГРАФИК ОШИБКИ">
